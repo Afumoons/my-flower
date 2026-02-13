@@ -104,9 +104,11 @@ function startBgHearts(opts = { interval: 700, max: 120 }) {
     const size = 10 + Math.random() * 36; // px
     const dur = 8 + Math.random() * 12; // seconds
     const dx = Math.round(Math.random() * 60 - 30) + "px";
+    const rotation = Math.random() * 360; // degrees
     h.style.left = left + "%";
     h.style.top = 110 + Math.random() * 8 + "%";
     h.style.fontSize = size + "px";
+    h.style.transform = `rotate(${rotation}deg)`;
     h.style.setProperty("--dur", dur + "s");
     h.style.setProperty("--dx", dx);
     root.appendChild(h);
