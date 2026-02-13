@@ -28,7 +28,7 @@ body {
 .nav {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  color: var(--accent);
   padding: 18px 28px;
 }
 .logo {
@@ -54,6 +54,11 @@ body {
   margin: 0 0 12px;
   color: var(--accent);
   letter-spacing: 0.4px;
+}
+/* romantic font family utility */
+.font-romantic,
+.title {
+  font-family: "Great Vibes", "Playfair Display", serif;
 }
 .subtitle {
   margin: 0 0 18px;
@@ -118,7 +123,58 @@ body {
   gap: 12px;
 }
 .rsvp-form input {
+  .reasons-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+    margin-top: 12px;
+  }
+  .reason-card {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 16px;
+    border-radius: 12px;
+    background: var(--card);
+    transition:
+      transform 0.22s ease,
+      box-shadow 0.22s ease,
+      background 0.22s ease;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.04);
+  }
+  .reason-card .icon {
+    flex: 0 0 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    background: linear-gradient(
+      180deg,
+      rgba(231, 110, 142, 0.06),
+      rgba(231, 110, 142, 0.02)
+    );
+  }
+  .reason-card h3 {
+    .reason-card h3 {
+      margin: 0 0 6px;
+      font-size: 16px;
+      color: var(--accent);
+      font-family: "Playfair Display", serif;
+    }
+    margin: 0;
+    color: var(--muted);
+  }
+  .reason-card:hover,
+  .reason-card.touch-active {
+    transform: translateY(-6px) scale(1.02);
+    box-shadow: 0 12px 32px rgba(200, 110, 140, 0.12);
+  }
   padding: 12px;
+  @media (max-width: 900px) {
+    .reasons-grid {
+      grid-template-columns: 1fr;
+    }
+  }
   border-radius: 10px;
   border: 1px solid #f0dfe6;
 }

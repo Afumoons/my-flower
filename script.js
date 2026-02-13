@@ -86,6 +86,103 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 });
+// split title text into per-letter spans for per-letter animation
+function splitTitleChars() {
+  const el = document.querySelector(".title");
+  if (!el) return;
+  const text = el.textContent.trim();
+  el.innerHTML = "";
+  const wrapper = document.createDocumentFragment();
+  for (let i = 0; i < text.length; i++) {
+    const ch = text[i];
+    const span = document.createElement("span");
+    span.className = "title-char";
+    span.textContent = ch === " " ? "\u00A0" : ch;
+    wrapper.appendChild(span);
+  }
+  el.appendChild(wrapper);
+}
+
+splitTitleChars();
+
+// per-letter animation using GSAP (gentle)
+function animateTitleChars() {
+  if (
+    window.matchMedia &&
+    window.matchMedia("(prefers-reduced-motion: reduce)").matches
+  )
+    return;
+  const chars = document.querySelectorAll(".title-char");
+  if (!chars.length) return;
+  try {
+    gsap.to(chars, {
+      y: -6,
+      repeat: -1,
+      yoyo: true,
+      duration: 1.8,
+      ease: "sine.inOut",
+      stagger: { each: 0.06, from: "center" },
+    });
+  } catch (e) {
+    /* ignore if gsap not present */
+  }
+}
+
+// call after ensuring gsap loaded (if present)
+if (window.gsap) {
+  try {
+    animateTitleChars();
+  } catch (e) {}
+} else {
+  // if gsap not yet loaded, attempt later
+  window.addEventListener("load", () => {
+    try {
+      animateTitleChars();
+    } catch (e) {}
+  });
+}
+
+// touch support for reason cards: add/remove touch-active class
+document.addEventListener("click", function (e) {
+  const card = e.target.closest(".reason-card");
+  if (card) return; // clicks on cards should not toggle
+});
+document.querySelectorAll(".reason-card").forEach((card) => {
+  card.addEventListener("touchstart", () => card.classList.add("touch-active"));
+  card.addEventListener("touchend", () =>
+    card.classList.remove("touch-active"),
+  );
+  card.addEventListener("touchcancel", () =>
+    card.classList.remove("touch-active"),
+  );
+});
+// gentle looping title motion
+try {
+  gsap.to(".title", {
+    y: -6,
+    repeat: -1,
+    yoyo: true,
+    duration: 2.4,
+    ease: "sine.inOut",
+    delay: 1.1,
+  });
+} catch (e) {}
+
+// reveal reasons list when scrolled into view
+const reasons = document.querySelectorAll(".reasons ul li");
+if (reasons && reasons.length) {
+  try {
+    gsap.from(reasons, {
+      y: 18,
+      opacity: 0,
+      stagger: 0.12,
+      duration: 0.9,
+      scrollTrigger: { trigger: ".reasons", start: "top 85%" },
+    });
+  } catch (e) {
+    gsap.from(reasons, { y: 18, opacity: 0, stagger: 0.12, duration: 0.9 });
+  }
+}
 
 // Background hearts: spawn subtle floating hearts across the viewport
 let _bgIntervalId = null;
